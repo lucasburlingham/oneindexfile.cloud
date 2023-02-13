@@ -28,7 +28,7 @@ require_once '../config.php';
 	<div class="container pt-6">
 		<div class="row align-items-center my-auto mx-auto ">
 			<div class="col-10">
-				<form action="handler.php" method="POST">
+				<form action="../handler.php" method="post">
 
 					<!-- Name -->
 					<div class="form-group row">
@@ -51,7 +51,7 @@ require_once '../config.php';
 					<div class="input-group">
 						<span class="input-group-text" id="host">https://<?php echo $URL; ?>/
 						</span>
-						<input type="text" class="form-control" id="directory" aria-describedby="host">
+						<input type="text" class="form-control" id="directory" name="directory" aria-describedby="host">
 						<button type="button" class="btn btn-secondary" onclick="copyLink()"
 							id="copyButton">Copy</button>
 					</div>
