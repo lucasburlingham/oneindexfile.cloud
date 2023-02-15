@@ -3,51 +3,60 @@
 // If we are receiving a POST request, then we need to save the file
 if(isset($_POST['content'])) {
 	$content = $_POST['content'];
-	file_put_contents('../index.html', $content);
-	header('Location: ../');
+	try {
+		// Try to save the file
+		file_put_contents('../index.html', $content) or die('Could not write to file' .  " <br>Content: " . $content);
+		sleep(2);
+		header('Location: ../');
+	} catch (Exception $e) {
+		// If we can't save the file, then we need to show the form
+		echo "Error: " . $e->getMessage();
+	}
+} else {
+	// If we are not receiving a POST request, then we need to show the form
+
+	$currentIndexFile = file_get_contents('../index.html');
+	if(file_exists('../index.html') == false) {
+		
+		// Don't use die, we want to show the form to generate the missing file
+		echo('Could not read index.html, creating file when form is submitted');
+		$currentIndexFile = "Start typing and use the toolbar to format your text. Save your changes by clicking the 'Submit' button below.";
+	}
 }
 
 
-$currentIndexFile = file_get_contents('../index.html');
-
-
 ?>
+
 
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Edit | <?php echo $username; ?></title>
+	<meta charset="utf-8">
+	<title>Edit </title>
+	<script src="../../builder/build/ckeditor.js"></script>
+	<!-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script> -->
 </head>
 
 <body>
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-		<textarea name="content" id="content" cols="30" rows="10"><?php echo $currentIndexFile; ?></textarea>
-		<input type="submit" value="Save">
+		<textarea name="content" id="editor">
+			<?php echo $currentIndexFile; ?>
+        </textarea>
+		<p>
+			<input type="submit" value="Submit">
+		</p>
 	</form>
-
-	<script src="/builder/ckeditor.js"></script>
 	<script>
 	ClassicEditor
-		.create(document.querySelector('.editor'), {
-			licenseKey: '',
-		})
-		.then(editor => {
-			window.editor = editor;
-		})
+		.create(document.querySelector('#editor'))
 		.catch(error => {
-			console.error('Oops, something went wrong!');
-			console.error(
-				'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:'
-			);
-			console.warn('Build id: ixjz5b8ci6lw-q1tmpm13890e');
 			console.error(error);
 		});
 	</script>
+
+
 </body>
 
 </html>
