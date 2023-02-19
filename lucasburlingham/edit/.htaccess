@@ -1,4 +1,0 @@
-AuthType Basic
-AuthName "Editors Restricted to Authorized Individuals Only"   
-AuthUserFile /var/www/oneindexfile.cloud/lucasburlingham/edit/.htpasswd
-Require valid-user
